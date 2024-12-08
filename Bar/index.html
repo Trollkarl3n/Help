@@ -1,77 +1,64 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv"> <!-- Anger att språket är svenska -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pej's Bar</title>
+    <meta charset="UTF-8"> <!-- Ställer in teckenkodningen till UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Anpassar sidan till mobila enheter -->
+    <title>Pej's Bar</title> <!-- Sätter sidans titel -->
 </head>
 <body>
-    <h1>Pej's Bar</h1>
+    <h1>Pej's Bar</h1> <!-- Sidans rubrik -->
     <p>Ange ett menyval för att se olika drycker. Du kan skriva <strong>Avbryt</strong> för att avsluta programmet.</p>
     <script>
-        "use strict";
+        "use strict"; // Aktiverar strikt läge för bättre felhantering
 
         // Arrays för olika sorters drycker
-        let alcoholic = ["Beer", "Wine", "Cider", "Cocktail", "Shots"];
-        let soft = ["Coke", "Fanta", "Sprite", "Dr. Pepper", "Mountain Dew", "Pepsi"];
-        let hot = ["Coffee", "Cappuccino", "Espresso", "Hot Chocolate", "Latte"];
-        let cold = ["Lemonade", "Juice", "Smoothie", "Milkshake", "Ice Tea"];
-        let extra = []; // En tom array som användaren kan fylla med egna drycker
-        let drinks = [alcoholic, soft, hot, cold, extra]; // Samlingsarray för alla sortiment
+        let alcoholic = ["Beer", "Wine", "Cider", "Cocktail", "Shots"]; // Alkoholhaltiga drycker
+        let soft = ["Coke", "Fanta", "Sprite", "Dr. Pepper", "Mountain Dew", "Pepsi"]; // Läskedrycker
+        let hot = ["Coffee", "Cappuccino", "Espresso", "Hot Chocolate", "Latte"]; // Varma drycker
+        let cold = ["Lemonade", "Juice", "Smoothie", "Milkshake", "Ice Tea"]; // Kalla drycker
+        let extra = []; // En tom array för användardefinierade drycker
+        let drinks = [alcoholic, soft, hot, cold, extra]; // Samlar alla arrays i en lista för enklare hantering
 
-        /**
-         * Funktion för att skriva ut alla drycker från en specifik sortimentslista
-         * @param {Array} drinkType - En array med drycker från en viss kategori.
-         */
+        // Funktion för att skriva ut drycker från en kategori
         function printDrinks(drinkType) {
-            document.write("Drycker i vald kategori:<br>");
-            for (let drink of drinkType) {
-                document.write(drink + "<br>");
+            document.write("Drycker i vald kategori:<br>"); // Rubrik
+            for (let drink of drinkType) { // Loopar genom dryckerna
+                document.write(drink + "<br>"); // Skriver ut varje dryck
             }
-            document.write("<br>");
+            document.write("<br>"); // Radbrytning
         }
 
-        /**
-         * Funktion för att skriva ut alla drycker från alla sortiment
-         */
+        // Funktion för att skriva ut alla drycker från alla kategorier
         function printAllDrinks() {
-            document.write("Alla drycker i barens sortiment:<br>");
-            // Nästlad for-loop för att gå igenom alla sortiment och deras drycker
-            for (let category of drinks) {
-                for (let drink of category) {
-                    document.write(drink + "<br>");
+            document.write("Alla drycker i barens sortiment:<br>"); 
+            for (let category of drinks) { // Loopar genom varje kategori
+                for (let drink of category) { // Loopar genom varje dryck i kategorin
+                    document.write(drink + "<br>"); // Skriver ut varje dryck
                 }
             }
             document.write("<br>");
         }
 
-        /**
-         * Funktion för att söka efter en dryck i alla sortiment
-         * @param {string} drinkName - Namnet på drycken att söka efter.
-         * @returns {boolean} - True om drycken hittades, annars false.
-         */
+        // Funktion för att söka efter en dryck i alla kategorier
         function searchForDrink(drinkName) {
-            for (let category of drinks) {
-                for (let drink of category) {
-                    if (drink.toLowerCase() === drinkName.toLowerCase()) {
-                        return true; // Drycken hittades
+            for (let category of drinks) { // Går igenom alla kategorier
+                for (let drink of category) { // Går igenom varje dryck
+                    if (drink.toLowerCase() === drinkName.toLowerCase()) { 
+                        return true; // Returnerar true om drycken hittas
                     }
                 }
             }
-            return false; // Drycken hittades inte
+            return false; // Returnerar false om drycken inte hittas
         }
 
-        /**
-         * Funktion för att lägga till en ny dryck i "extra"-kategorin
-         * @param {string} newDrink - Namnet på den nya drycken.
-         */
+        // Funktion för att lägga till en ny dryck i "extra"-kategorin
         function addDrink(newDrink) {
-            extra.push(newDrink); // Lägg till drycken i arrayen "extra"
+            extra.push(newDrink); // Lägger till drycken i "extra"-arrayen
         }
 
-        // Huvudprogram som kör användarinteraktionen
+        // Huvudprogrammet som kör användarinteraktionen
         while (true) {
-            // Visa menyval för användaren
+            // Visar menyval för användaren
             let menuChoice = prompt(
                 "Välj ett alternativ:\n" +
                 "1: Visa alla alkoholhaltiga drycker\n" +
@@ -84,36 +71,37 @@
                 "Avbryt: Avsluta programmet"
             );
 
-            // Avbryt programmet om användaren skriver "Avbryt"
+            // Avbryter om användaren skriver "Avbryt"
             if (menuChoice === null || menuChoice.toLowerCase() === "avbryt") {
                 alert("Programmet avslutas. Tack för besöket!");
                 break;
             }
 
+            // Hanterar användarens menyval
             switch (menuChoice) {
                 case "1":
-                    printDrinks(alcoholic); // Visa alkoholhaltiga drycker
+                    printDrinks(alcoholic); // Visar alkoholhaltiga drycker
                     break;
                 case "2":
-                    printDrinks(soft); // Visa läskedrycker
+                    printDrinks(soft); // Visar läskedrycker
                     break;
                 case "3":
-                    printDrinks(hot); // Visa varma drycker
+                    printDrinks(hot); // Visar varma drycker
                     break;
                 case "4":
-                    printDrinks(cold); // Visa kalla drycker
+                    printDrinks(cold); // Visar kalla drycker
                     break;
                 case "5":
                     let newDrink = prompt("Ange namnet på den nya drycken:");
                     if (newDrink) {
-                        addDrink(newDrink); // Lägg till drycken
+                        addDrink(newDrink); // Lägger till drycken
                         alert(`Drycken "${newDrink}" har lagts till i kategorin 'extra'.`);
                     }
                     break;
                 case "6":
                     let searchDrink = prompt("Ange namnet på drycken att söka efter:");
                     if (searchDrink) {
-                        let found = searchForDrink(searchDrink);
+                        let found = searchForDrink(searchDrink); // Söker efter drycken
                         if (found) {
                             alert(`Drycken "${searchDrink}" finns i barens sortiment.`);
                         } else {
@@ -122,10 +110,10 @@
                     }
                     break;
                 case "7":
-                    printAllDrinks(); // Visa alla drycker
+                    printAllDrinks(); // Visar alla drycker
                     break;
                 default:
-                    alert("Ogiltigt val! Försök igen.");
+                    alert("Ogiltigt val! Försök igen."); // Felmeddelande vid ogiltigt val
             }
         }
     </script>
