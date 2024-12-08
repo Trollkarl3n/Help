@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rita Gran</title>
+</head>
+<body>
+    <!-- Titel och beskrivning för användaren -->
+    <h1>Testa Rita Gran</h1>
+
+    <!-- JavaScript som ritar granen -->
+    <script>
+        // Funktion som skapar en rad av granen
+        // Parametrar:
+        // - bredd: Den totala bredden på raden (antal tecken)
+        // - tecken: Själva tecknen som ska synas på raden, t.ex. "*" eller "888"
+        function ritaRad(bredd, tecken) {
+            // Beräknar antalet mellanslag som behövs på båda sidor av tecknen för centrerad text
+            let mellanslag = " ".repeat((bredd - tecken.length) / 2);
+            
+            // Returnerar en sträng med mellanslag + tecken + mellanslag
+            return mellanslag + tecken + mellanslag;
+        }
+
+        // Funktion som ritar hela granen
+        function ritaGran() {
+            let maxBredd = 13; // Den totala bredden på den bredaste delen av granen (måste vara ett udda tal)
+            let gran = ""; // Variabel för att lagra hela granens utseende som en enda sträng
+
+            // Skapar den översta delen av granen (triangeln)
+            // Loopen ökar med 2 varje gång för att lägga till fler "*" per rad
+            for (let i = 1; i <= maxBredd; i += 2) {
+                // Lägg till varje rad med stjärnor centrerade
+                gran += ritaRad(maxBredd, "*".repeat(i)) + "\n";
+            }
+
+            // Skapar stammen längst ner på granen
+            // Här lägger vi till 3 rader med "888" som är centrerade
+            for (let i = 0; i < 3; i++) {
+                gran += ritaRad(maxBredd, "888") + "\n";
+            }
+
+            // Skriver ut granen till webbläsaren
+            // Vi använder <pre>-taggen för att behålla radbrytning och format
+            document.writeln("<pre>" + gran + "</pre>");
+        }
+
+        // Anropa funktionen för att rita granen
+        ritaGran(); // Detta gör att granen skapas och visas direkt när sidan laddas
+    </script>
+</body>
+
+</html>

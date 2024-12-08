@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Miniräknare</title>
+    <style>
+        /* Styling för att göra gränssnittet användarvänligt */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            white-space: pre-wrap; /* Behåll radbrytningar i texten */
+        }
+    </style>
+</head>
+<body>
+    <!-- Titel och instruktioner -->
+    <h1>Basic Miniräknare</h1>
+    <p>Använd operatorerna <strong>+, -, *, /</strong> för att göra beräkningar.</p>
+    <p>Skriv <strong>Slump</strong> istället för ett tal för att använda ett slumptal. Klicka på "Avsluta" för att se historik och statistik.</p>
+
+    <!-- Inmatningsfält och knappar -->
+    <label for="tal1">Första talet:</label>
+    <input type="text" id="tal1" placeholder="Ange tal eller 'Slump'"><br><br>
+
+    <label for="operator">Operator:</label>
+    <input type="text" id="operator" placeholder="+, -, *, /"><br><br>
+
+    <label for="tal2">Andra talet:</label>
+    <input type="text" id="tal2" placeholder="Ange tal eller 'Slump'"><br><br>
+
+    <button onclick="berakna()">Beräkna</button>
+    <button onclick="avsluta()">Avsluta</button>
+
+    <!-- Resultatområdet -->
+    <div class="output" id="output">Resultat kommer att visas här...</div>
+
+    <script>
+        "use strict"; // Aktiverar strikt läge för att förhindra vanliga programmeringsfel
+
+        // Array för att lagra historik av resultat
+        let resultatHistorik = [];
+
+        /**
+         * Funktion för att utföra en enkel matematisk operation.
+         * @param {number} tal1 - Första talet.
+         * @param {string} operator - Operator (+, -, *, /).
+         * @param {number} tal2 - Andra talet.
+         * @returns {number|string} Resultatet av operationen eller ett felmeddelande.
+         */
+        function basicCalc(tal1, operator, tal2) {
+            switch (operator) {
+                case "+":
+                    return tal1 + tal2; // Addition
+                case "-":
+                    return tal1 - tal2; // Subtraktion
+                case "*":
+                    return tal1 * tal2; // Multiplikation
+                case "/":
+                    if (tal2 === 0) return "Fel: Division med 0 är inte tillåtet!"; // Kontrollera division med 0
+                    return tal1 / tal2; // Division
+                default:
+                    return "Ogiltig operator!"; // Om operatorn är fel
+            }
+        }
+
+        /**
+        * Funktion för att läsa användarens inmatning, utföra beräkningar baserat på input
+        * och visa resultaten i användargränssnittet.
+        */
+        function berakna() {
+            const output = document.getElementById("output"); // Hämta det område där resultaten ska visas.
+    
+            // Hämta värden från input-fälten i användargränssnittet.
+            let tal1 = document.getElementById("tal1").value; // Läs det första talet från användaren.
+            let operator = document.getElementById("operator").value; // Läs operatorn (+, -, *, /).
+            let tal2 = document.getElementById("tal2").value; // Läs det andra talet från användaren.
+
+            // Hantera specialfallet "Slump":
+            // Om användaren skriver "Slump" istället för ett tal, genereras ett slumptal mellan 0 och 10.
+            // Annars konverteras inmatningen till ett flyttal (decimaltal).
+            tal1 = tal1.toLowerCase() === "slump" ? Math.random() * 10 : parseFloat(tal1);
+            tal2 = tal2.toLowerCase() === "slump" ? Math.random() * 10 : parseFloat(tal2);
+
+            // Kontrollera att inmatningen för båda talen är giltig.
+            // Om något av talen inte är ett nummer (NaN), visas ett felmeddelande och funktionen avslutas.
+            if (isNaN(tal1) || isNaN(tal2)) {
+                output.textContent = "Fel: Ange giltiga tal!"; // Meddelande till användaren.
+                return; // Avsluta funktionen.
+            }
+
+            // Kontrollera att användaren har angett en giltig operator (+, -, *, /).
+            // Om operatorn inte matchar någon av de tillåtna värdena, visas ett felmeddelande.
+            if (!["+", "-", "*", "/"].includes(operator)) {
+                output.textContent = "Fel: Ogiltig operator!"; // Meddelande till användaren.
+                return; // Avsluta funktionen.
+            }
+
+            // Utför huvudberäkningen med de angivna talen och operatorn.
+            let resultat = basicCalc(tal1, operator, tal2); // Använd funktionen `basicCalc` för att beräkna resultatet.
+    
+            // Visa resultatet i output-området med en beskrivning av operationen.
+            output.textContent = `Resultat: ${tal1.toFixed(2)} ${operator} ${tal2.toFixed(2)} = ${resultat}\n`;
+
+            // Om resultatet är ett nummer (dvs. en giltig beräkning, inte ett felmeddelande),
+            // läggs det till i historik-arrayen för att kunna visas senare.
+            if (typeof resultat === "number") {
+                resultatHistorik.push(resultat);
+            }
+
+            // Beräkna och visa resultaten med de andra operatorerna (de som inte användes av användaren).
+            // Vi loopar genom operatorerna ["+", "-", "*", "/"], men hoppar över den aktuella operatorn.
+            for (let op of ["+", "-", "*", "/"].filter((op) => op !== operator)) {
+                // Beräkna resultatet för varje operator.
+                let extraResultat = basicCalc(tal1, op, tal2);
+
+                // Visa resultatet för varje extra operation i output-området.
+                output.textContent += `Resultat med ${op}: ${tal1.toFixed(2)} ${op} ${tal2.toFixed(2)} = ${extraResultat}\n`;
+
+                // Om det extra resultatet är ett giltigt nummer, lägg till det i historiken.
+                if (typeof extraResultat === "number") {
+                    resultatHistorik.push(extraResultat);
+                }
+            }   
+        }
+
+        /**
+         * Funktion för att visa historik och statistik, och sedan tömma historiken.
+         */
+        function avsluta() {
+            const output = document.getElementById("output");
+
+            // Kontrollera om det finns något att visa i historiken
+            if (resultatHistorik.length === 0) {
+                output.textContent = "Ingen historik tillgänglig.";
+                return;
+            }
+
+            // Beräkna statistik
+            const minstaVarde = Math.min(...resultatHistorik); // Minsta värde
+            const medelvarde = resultatHistorik.reduce((sum, val) => sum + val, 0) / resultatHistorik.length; // Medelvärde
+
+            // Visa resultat och statistik
+            output.textContent = `Historik:\n${resultatHistorik.map(v => v.toFixed(2)).join(", ")}\n\n`;
+            output.textContent += `Minsta värdet: ${minstaVarde.toFixed(2)}\n`;
+            output.textContent += `Medelvärdet: ${medelvarde.toFixed(2)}\n`;
+
+            // Töm historiken
+            resultatHistorik = [];
+        }
+    </script>
+</body>
+</html>
